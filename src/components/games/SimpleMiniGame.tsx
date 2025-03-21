@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "../ui/GlassCard";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { Coins, Trophy, RefreshCw } from "lucide-react";
 
 export const SimpleMiniGame = () => {

@@ -10,7 +10,7 @@ import {
   TrendingUp, TrendingDown, Info, BarChart3, Coins
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import {
   Tabs,
   TabsContent,

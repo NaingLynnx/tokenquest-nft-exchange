@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "../ui/GlassCard";
-import { Twitter, Github, Discord, Heart } from "lucide-react";
+import { Twitter, Github, MessageSquare, Heart } from "lucide-react";
 
 export const Footer = () => {
   const year = new Date().getFullYear();
@@ -43,7 +42,7 @@ export const Footer = () => {
                 <Github size={20} />
               </a>
               <a href="#" className="text-muted-foreground hover:text-token-blue transition-colors" aria-label="Discord">
-                <Discord size={20} />
+                <MessageSquare size={20} />
               </a>
             </div>
           </div>

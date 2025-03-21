@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "../ui/GlassCard";
@@ -10,7 +9,7 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 declare global {
   interface Window {
