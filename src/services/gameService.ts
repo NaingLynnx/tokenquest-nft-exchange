@@ -48,6 +48,12 @@ export function calculateTokensEarned(gameName: string, score: number): number {
     case 'Token Clicker':
       // 2 tokens per point in Token Clicker
       return score * 2;
+    case 'Knowledge Quiz':
+      // 5 tokens per correct answer in Knowledge Quiz
+      return score * 5;
+    case 'True or False':
+      // 4 tokens per correct answer in True or False
+      return score * 4;
     default:
       return score;
   }

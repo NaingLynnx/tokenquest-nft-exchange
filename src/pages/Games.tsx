@@ -1,14 +1,21 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SimpleMiniGame } from "@/components/games/SimpleMiniGame";
+import { QuizGame } from "@/components/games/QuizGame";
+import { TrueFalseGame } from "@/components/games/TrueFalseGame";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/button";
-import { Gamepad2, Trophy, ArrowLeft, ArrowRight, Users, Clock, Star } from "lucide-react";
+import { Gamepad2, Trophy, ArrowLeft, ArrowRight, Users, Clock, Star, BookOpen, Brain, Lightbulb } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { formatTokens } from "@/services/gameService";
 
 const Games = () => {
+  const { user } = useAuth();
+  const [selectedGame, setSelectedGame] = useState<string>("token-clicker");
+  
   const games = [
     {
       title: "Crypto Racer",
@@ -39,6 +46,19 @@ const Games = () => {
     },
   ];
 
+  const renderSelectedGame = () => {
+    switch (selectedGame) {
+      case "token-clicker":
+        return <SimpleMiniGame />;
+      case "knowledge-quiz":
+        return <QuizGame />;
+      case "true-false":
+        return <TrueFalseGame />;
+      default:
+        return <SimpleMiniGame />;
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -56,9 +76,9 @@ const Games = () => {
               </p>
             </div>
             
-            <GlassCard className="p-2 flex items-center gap-2">
+            <GlassCard className="p-3 flex items-center gap-2">
               <div className="text-xs text-muted-foreground">Your Token Balance:</div>
-              <div className="text-sm font-medium">0 TQT</div>
+              <div className="text-sm font-medium">{user ? formatTokens(user.tokens) : "0"} TQT</div>
             </GlassCard>
           </div>
           
@@ -66,7 +86,31 @@ const Games = () => {
             <div className="lg:col-span-2">
               <GlassCard className="p-6 h-full">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Featured Game</h2>
+                  <div className="flex gap-4">
+                    <Button 
+                      variant={selectedGame === "token-clicker" ? "default" : "outline"}
+                      className="rounded-full"
+                      onClick={() => setSelectedGame("token-clicker")}
+                    >
+                      Token Clicker
+                    </Button>
+                    <Button 
+                      variant={selectedGame === "knowledge-quiz" ? "default" : "outline"}
+                      className="rounded-full"
+                      onClick={() => setSelectedGame("knowledge-quiz")}
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Knowledge Quiz
+                    </Button>
+                    <Button 
+                      variant={selectedGame === "true-false" ? "default" : "outline"}
+                      className="rounded-full"
+                      onClick={() => setSelectedGame("true-false")}
+                    >
+                      <Lightbulb className="w-4 h-4 mr-2" />
+                      True or False
+                    </Button>
+                  </div>
                   <GlassCard 
                     variant="light" 
                     className="text-xs font-medium py-1 px-3 bg-token-blue/10"
@@ -76,10 +120,11 @@ const Games = () => {
                   </GlassCard>
                 </div>
                 
-                <SimpleMiniGame />
+                {renderSelectedGame()}
               </GlassCard>
             </div>
             
+            {/* Tournament section */}
             <div className="lg:col-span-1">
               <GlassCard className="p-6 h-full">
                 <h2 className="text-xl font-bold mb-6">Tournament</h2>
