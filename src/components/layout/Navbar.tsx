@@ -6,6 +6,8 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavbarActions } from "./NavbarActions";
 import { useAuth } from "@/contexts/AuthContext";
+import { UserProfile } from "@/components/wallet/UserProfile";
+import { ConnectWallet } from "@/components/wallet/ConnectWallet";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
