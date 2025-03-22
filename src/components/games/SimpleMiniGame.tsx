@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { GlassCard } from "../ui/GlassCard";
 import { toast } from "sonner";
 import { Coins, Trophy, RefreshCw } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { saveGameResult, calculateTokensEarned } from "@/services/gameService";
 
 export const SimpleMiniGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -11,7 +13,9 @@ export const SimpleMiniGame = () => {
   const [timeLeft, setTimeLeft] = useState(20);
   const [targetPosition, setTargetPosition] = useState({ x: 0, y: 0 });
   const [earnedTokens, setEarnedTokens] = useState(0);
+  const [isSaving, setSaving] = useState(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
   
   // Reset game state
   const resetGame = () => {
@@ -20,6 +24,7 @@ export const SimpleMiniGame = () => {
     setScore(0);
     setTimeLeft(20);
     setEarnedTokens(0);
+    setSaving(false);
   };
   
   // Start game
@@ -63,10 +68,30 @@ export const SimpleMiniGame = () => {
     });
   };
   
-  // Calculate earned tokens based on score
-  const calculateTokens = (score: number) => {
-    // Simple formula: 2 tokens per point
-    return score * 2;
+  // Save game result to database
+  const saveGameScore = async () => {
+    if (!user) {
+      toast.error("Please log in to save your score", {
+        description: "Create an account to track your progress"
+      });
+      return;
+    }
+    
+    try {
+      setSaving(true);
+      const tokens = calculateTokensEarned("Token Clicker", score);
+      await saveGameResult(user.id, "Token Clicker", score, tokens);
+      toast.success("Score saved successfully!", {
+        description: `${tokens} tokens added to your account`
+      });
+    } catch (error) {
+      console.error("Error saving game result:", error);
+      toast.error("Failed to save score", {
+        description: "Please try again"
+      });
+    } finally {
+      setSaving(false);
+    }
   };
   
   // Game timer
@@ -78,7 +103,7 @@ export const SimpleMiniGame = () => {
         if (prevTime <= 1) {
           clearInterval(timer);
           setGameOver(true);
-          const tokens = calculateTokens(score);
+          const tokens = calculateTokensEarned("Token Clicker", score);
           setEarnedTokens(tokens);
           toast.success(`Game Over! You earned ${tokens} TQT tokens!`, {
             duration: 5000,
@@ -151,8 +176,20 @@ export const SimpleMiniGame = () => {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Play Again
               </Button>
-              <Button variant="outline" className="rounded-full">Claim Tokens</Button>
+              <Button 
+                variant="outline" 
+                className="rounded-full"
+                onClick={saveGameScore}
+                disabled={isSaving || !user}
+              >
+                {isSaving ? 'Saving...' : 'Claim Tokens'}
+              </Button>
             </div>
+            {!user && (
+              <p className="text-sm text-muted-foreground mt-4">
+                <a href="/login" className="text-token-blue hover:underline">Log in</a> or <a href="/signup" className="text-token-blue hover:underline">sign up</a> to save your tokens!
+              </p>
+            )}
           </div>
         )}
         
