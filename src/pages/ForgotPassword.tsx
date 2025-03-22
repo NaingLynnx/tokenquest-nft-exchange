@@ -11,7 +11,8 @@ import {
   Mail, 
   LockKeyhole, 
   MailCheck,
-  KeyRound
+  KeyRound,
+  Copy
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -43,6 +44,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { toast } from 'sonner';
 
 // Step 1: Request password reset
 const requestSchema = z.object({
@@ -68,6 +70,7 @@ const ForgotPassword = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [resetCode, setResetCode] = useState<string | null>(null);
   
   // Form for requesting a reset code
   const requestForm = useForm<RequestFormValues>({
@@ -92,6 +95,7 @@ const ForgotPassword = () => {
       const result = await requestPasswordReset(data.email);
       if (result) {
         setEmail(data.email);
+        setResetCode(result);
         setStep(2);
       }
     } catch (error) {
@@ -112,6 +116,19 @@ const ForgotPassword = () => {
 
   const navigateToLogin = () => {
     navigate('/login');
+  };
+
+  const copyCodeToClipboard = () => {
+    if (resetCode) {
+      navigator.clipboard.writeText(resetCode);
+      toast.success('Code copied to clipboard');
+    }
+  };
+
+  const fillCodeToForm = () => {
+    if (resetCode) {
+      resetForm.setValue('code', resetCode);
+    }
   };
 
   return (
@@ -181,13 +198,35 @@ const ForgotPassword = () => {
               // Step 2: Enter code and new password
               <Form {...resetForm}>
                 <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-6">
-                  <Alert>
-                    <KeyRound className="h-4 w-4" />
-                    <AlertTitle>Reset code sent!</AlertTitle>
-                    <AlertDescription>
-                      We've sent a 6-digit code to {email}
-                    </AlertDescription>
-                  </Alert>
+                  {resetCode && (
+                    <Alert className="bg-green-50 border-green-200">
+                      <KeyRound className="h-4 w-4 text-green-600" />
+                      <AlertTitle className="text-green-800">Reset code generated!</AlertTitle>
+                      <AlertDescription className="text-green-700">
+                        <div className="flex flex-col gap-3">
+                          <p>
+                            Here is your reset code (normally sent via email):
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <code className="bg-green-100 px-3 py-1 rounded-md text-lg font-mono">
+                              {resetCode}
+                            </code>
+                            <Button size="icon" variant="outline" onClick={copyCodeToClipboard}>
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-green-700 self-start"
+                            onClick={fillCodeToForm}
+                          >
+                            Fill code automatically
+                          </Button>
+                        </div>
+                      </AlertDescription>
+                    </Alert>
+                  )}
                   
                   <FormField
                     control={resetForm.control}
