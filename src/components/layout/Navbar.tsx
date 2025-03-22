@@ -1,15 +1,17 @@
 
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ConnectWallet } from "../wallet/ConnectWallet";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NavbarActions } from "./NavbarActions";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
   
   const navLinks = [
     { title: "Home", path: "/" },
@@ -71,7 +73,7 @@ export const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <ConnectWallet />
+          <NavbarActions />
         </div>
 
         {/* Mobile Menu Button */}
@@ -106,7 +108,25 @@ export const Navbar = () => {
               </Link>
             ))}
             <div className="pt-2 border-t">
-              <ConnectWallet />
+              {user ? (
+                <>
+                  <UserProfile />
+                  <ConnectWallet />
+                </>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link to="/login" className="w-full">
+                    <Button variant="ghost" className="w-full justify-start">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/signup" className="w-full">
+                    <Button variant="default" className="w-full justify-start">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </nav>
         </div>
