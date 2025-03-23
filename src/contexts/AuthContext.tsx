@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, getCurrentUser, login as dbLogin, logout as dbLogout, createUser, getUserByEmail, updateUser } from '../services/database';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AuthContextType {
   user: User | null;
@@ -9,7 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, username: string, password: string) => Promise<void>;
   logout: () => void;
-  requestPasswordReset: (email: string) => Promise<string | null>;
+  requestPasswordReset: (email: string) => Promise<void>;
   resetPassword: (email: string, code: string, newPassword: string) => Promise<boolean>;
 }
 
@@ -18,16 +19,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 interface AuthProviderProps {
   children: ReactNode;
 }
-
-// Mock function to simulate sending an email with a code
-const sendResetCodeEmail = (email: string, code: string): Promise<boolean> => {
-  console.log(`Sending reset code ${code} to ${email}`);
-  // This would be implemented with a real email service in production
-  return Promise.resolve(true);
-};
-
-// Store reset codes (this would be in a database in a real app)
-const resetCodes: Record<string, { code: string, timestamp: number }> = {};
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -82,42 +73,65 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     toast.info('You have been logged out');
   };
 
-  const requestPasswordReset = async (email: string): Promise<string | null> => {
+  const requestPasswordReset = async (email: string): Promise<void> => {
     try {
       setIsLoading(true);
-      const user = getUserByEmail(email);
       
+      // Check if user exists
+      const user = getUserByEmail(email);
       if (!user) {
         toast.error('User not found', {
           description: 'No account found with this email address'
         });
-        return null;
+        return;
       }
       
       // Generate a 6-digit code
       const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
       
-      // Store the code with a timestamp (expires in 15 minutes)
-      resetCodes[email] = {
-        code: resetCode,
-        timestamp: Date.now() + 15 * 60 * 1000 // 15 minutes
-      };
+      // Store token in Supabase - set to expire in 15 minutes
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
       
-      // Send the code via email
-      await sendResetCodeEmail(email, resetCode);
+      const { error: tokenError } = await supabase
+        .from('reset_tokens')
+        .insert({
+          email,
+          token: resetCode,
+          expires_at: expiresAt
+        });
+        
+      if (tokenError) {
+        console.error('Error storing reset token:', tokenError);
+        toast.error('Failed to initiate password reset', {
+          description: 'Please try again later'
+        });
+        return;
+      }
       
-      toast.success('Password reset code sent', {
+      // Send the reset email using our edge function
+      const { error: emailError } = await supabase.functions.invoke('send-reset-email', {
+        body: { email, resetToken: resetCode }
+      });
+      
+      if (emailError) {
+        console.error('Error sending reset email:', emailError);
+        toast.error('Failed to send reset email', {
+          description: 'Please try again later'
+        });
+        return;
+      }
+      
+      toast.success('Password reset email sent', {
         description: 'Check your email for the reset code'
       });
       
-      return resetCode;
     } catch (error) {
+      console.error('Password reset request error:', error);
       if (error instanceof Error) {
         toast.error('Failed to send reset code', {
           description: error.message
         });
       }
-      return null;
     } finally {
       setIsLoading(false);
     }
@@ -127,30 +141,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
-      const resetData = resetCodes[email];
+      // Verify the reset token
+      const { data: tokens, error: fetchError } = await supabase
+        .from('reset_tokens')
+        .select('*')
+        .eq('email', email)
+        .eq('token', code)
+        .eq('used', false)
+        .gt('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1);
       
-      if (!resetData) {
-        toast.error('Invalid reset attempt', {
-          description: 'No reset code was requested for this email'
-        });
-        return false;
-      }
-      
-      if (Date.now() > resetData.timestamp) {
-        toast.error('Reset code expired', {
+      if (fetchError || !tokens || tokens.length === 0) {
+        toast.error('Invalid or expired code', {
           description: 'Please request a new code'
         });
-        delete resetCodes[email];
         return false;
       }
       
-      if (resetData.code !== code) {
-        toast.error('Invalid code', {
-          description: 'The code you entered is incorrect'
-        });
-        return false;
-      }
+      const resetToken = tokens[0];
       
+      // Get the user
       const user = getUserByEmail(email);
       
       if (!user) {
@@ -163,8 +174,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Update the user's password
       updateUser(user.id, { password: newPassword });
       
-      // Clear the reset code
-      delete resetCodes[email];
+      // Mark the token as used
+      const { error: updateError } = await supabase
+        .from('reset_tokens')
+        .update({ used: true })
+        .eq('id', resetToken.id);
+      
+      if (updateError) {
+        console.error('Error marking token as used:', updateError);
+      }
       
       toast.success('Password reset successful', {
         description: 'You can now log in with your new password'
@@ -172,6 +190,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       return true;
     } catch (error) {
+      console.error('Password reset error:', error);
       if (error instanceof Error) {
         toast.error('Failed to reset password', {
           description: error.message
