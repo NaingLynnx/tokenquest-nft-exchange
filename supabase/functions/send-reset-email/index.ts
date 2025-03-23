@@ -45,9 +45,9 @@ serve(async (req) => {
       );
     }
 
-    // Send the email
+    // Send the email using Resend's default domain
     const { data, error } = await resend.emails.send({
-      from: "Password Reset <noreply@minttoken.app>",
+      from: "Password Reset <onboarding@resend.dev>", // Using Resend's default domain
       to: [email],
       subject: "Reset Your Password",
       html: `
