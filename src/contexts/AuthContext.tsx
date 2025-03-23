@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, username: string, password: string) => Promise<void>;
+  signup: (email: string, username: string, password: string, additionalData?: Record<string, any>) => Promise<void>;
   logout: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
   resetPassword: (email: string, code: string, newPassword: string) => Promise<boolean>;
@@ -49,10 +49,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const signup = async (email: string, username: string, password: string) => {
+  const signup = async (email: string, username: string, password: string, additionalData?: Record<string, any>) => {
     try {
       setIsLoading(true);
-      const newUser = createUser({ email, username, password });
+      const newUser = createUser({ 
+        email, 
+        username, 
+        password,
+        ...additionalData
+      });
       setUser(newUser);
       toast.success('Account created successfully!');
     } catch (error) {

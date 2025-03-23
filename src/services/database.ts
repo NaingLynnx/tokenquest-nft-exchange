@@ -1,4 +1,3 @@
-
 // Simple localStorage-based database service for demo purposes
 // In a production app, this would connect to a real database like Supabase, Firebase, etc.
 
@@ -10,6 +9,10 @@ export interface User {
   password: string; // NOTE: Storing passwords in localStorage is NOT secure
   tokens: number;
   createdAt: string;
+  gender?: string;
+  dob?: string;
+  profession?: string;
+  country?: string;
 }
 
 // Game result type

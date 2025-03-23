@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavbarActions } from "./NavbarActions";
 import { useAuth } from "@/contexts/AuthContext";
@@ -51,9 +51,9 @@ export const Navbar = () => {
           className="text-2xl font-bold flex items-center gap-2 text-foreground"
         >
           <div className="w-10 h-10 rounded-full bg-token-blue flex items-center justify-center text-white font-bold">
-            TQ
+            <Zap className="w-6 h-6" />
           </div>
-          <span className="animate-fade-in">TokenQuest</span>
+          <span className="animate-fade-in">SF Token</span>
         </Link>
 
         {/* Desktop Navigation */}

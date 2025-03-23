@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, ArrowRight, LockKeyhole, Mail, User } from 'lucide-react';
+import { ArrowLeft, ArrowRight, LockKeyhole, Mail, User, Calendar, Briefcase, Flag } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -19,18 +19,45 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { cn } from '@/lib/utils';
 
 const signupSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
+  gender: z.string().min(1, 'Please select your gender'),
+  dob: z.date({
+    required_error: 'Please select your date of birth',
+  }),
+  profession: z.string().min(1, 'Please enter your profession'),
+  country: z.string().min(1, 'Please select your country'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
+
+const countries = [
+  "United States", "Canada", "United Kingdom", "Australia", "Germany", "France", 
+  "Japan", "China", "India", "Brazil", "Mexico", "South Africa", "Nigeria", 
+  "Russia", "Sweden", "Norway", "Denmark", "Finland", "Spain", "Italy"
+];
 
 const Signup = () => {
   const { signup, isLoading } = useAuth();
@@ -43,12 +70,26 @@ const Signup = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      gender: '',
+      profession: '',
+      country: '',
     },
   });
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      await signup(data.email, data.username, data.password);
+      // Pass all the user data to the signup function
+      await signup(
+        data.email, 
+        data.username, 
+        data.password, 
+        {
+          gender: data.gender,
+          dob: data.dob.toISOString(),
+          profession: data.profession,
+          country: data.country
+        }
+      );
       navigate('/games');
     } catch (error) {
       // Error is handled in the auth context
@@ -69,7 +110,7 @@ const Signup = () => {
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold mb-2">Create Account</h1>
               <p className="text-muted-foreground">
-                Join TokenQuest and start earning rewards
+                Join SF Token and start earning rewards
               </p>
             </div>
             
@@ -108,6 +149,122 @@ const Signup = () => {
                     </FormItem>
                   )}
                 />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Gender</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select gender" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                
+                  <FormField
+                    control={form.control}
+                    name="dob"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>Date of Birth</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <Calendar className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <CalendarComponent
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              disabled={(date) =>
+                                date > new Date() || date < new Date("1900-01-01")
+                              }
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="profession"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Profession</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input placeholder="Your profession" className="pl-10" {...field} />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="pl-10">
+                              <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                                <Flag className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                              <SelectValue placeholder="Select country" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {countries.map((country) => (
+                              <SelectItem key={country} value={country}>
+                                {country}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 
                 <FormField
                   control={form.control}

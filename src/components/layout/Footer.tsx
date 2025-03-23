@@ -1,7 +1,8 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "../ui/GlassCard";
-import { Twitter, Github, MessageSquare, Heart } from "lucide-react";
+import { Twitter, Github, MessageSquare, Zap } from "lucide-react";
 
 export const Footer = () => {
   const year = new Date().getFullYear();
@@ -25,10 +26,10 @@ export const Footer = () => {
               to="/"
               className="text-2xl font-bold flex items-center gap-2 mb-4 text-foreground"
             >
-              <div className="w-8 h-8 rounded-full bg-token-blue flex items-center justify-center text-white font-bold text-sm">
-                TQ
+              <div className="w-8 h-8 rounded-full bg-token-blue flex items-center justify-center text-white">
+                <Zap className="w-5 h-5" />
               </div>
-              TokenQuest
+              SF Token
             </Link>
             <p className="text-muted-foreground text-sm max-w-sm">
               Play, earn and trade on the most innovative Web3 gaming platform. 
@@ -56,12 +57,12 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/nft-marketplace" className="text-sm text-muted-foreground hover:text-token-blue transition-colors">
+                <Link to="/nft" className="text-sm text-muted-foreground hover:text-token-blue transition-colors">
                   NFT Marketplace
                 </Link>
               </li>
               <li>
-                <Link to="/token-exchange" className="text-sm text-muted-foreground hover:text-token-blue transition-colors">
+                <Link to="/exchange" className="text-sm text-muted-foreground hover:text-token-blue transition-colors">
                   Token Exchange
                 </Link>
               </li>
@@ -102,7 +103,7 @@ export const Footer = () => {
         
         <GlassCard className="flex flex-col md:flex-row justify-between items-center gap-4 p-6 bg-token-dark/5">
           <p className="text-sm text-muted-foreground">
-            © {year} TokenQuest. All rights reserved.
+            © {year} SF Token. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-xs text-muted-foreground hover:text-token-blue transition-colors">Privacy Policy</a>
