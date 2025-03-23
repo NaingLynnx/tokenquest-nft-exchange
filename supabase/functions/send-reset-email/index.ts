@@ -17,6 +17,7 @@ serve(async (req) => {
   }
 
   try {
+    // Parse the request body
     const { email, resetToken } = await req.json();
 
     if (!email || !resetToken) {
@@ -31,8 +32,22 @@ serve(async (req) => {
 
     console.log(`Sending reset email to ${email} with token ${resetToken}`);
 
+    // Check if RESEND_API_KEY is available
+    const apiKey = Deno.env.get("RESEND_API_KEY");
+    if (!apiKey) {
+      console.error("Missing RESEND_API_KEY environment variable");
+      return new Response(
+        JSON.stringify({ error: "Email service configuration error" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Send the email
     const { data, error } = await resend.emails.send({
-      from: "Password Reset <onboarding@resend.dev>",
+      from: "Password Reset <noreply@minttoken.app>",
       to: [email],
       subject: "Reset Your Password",
       html: `
@@ -57,7 +72,7 @@ serve(async (req) => {
     if (error) {
       console.error("Email sending error:", error);
       return new Response(
-        JSON.stringify({ error: "Failed to send email" }),
+        JSON.stringify({ error: "Failed to send email", details: error }),
         {
           status: 500,
           headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -75,7 +90,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("Error in send-reset-email function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "An unexpected error occurred", details: error.message }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
