@@ -48,6 +48,41 @@ const statements = [
     statement: "An octopus has three hearts.",
     isTrue: true,
     explanation: "Octopuses have three hearts: two pump blood through the gills, while the third pumps blood through the body."
+  },
+  {
+    statement: "A day on Venus is longer than a year on Venus.",
+    isTrue: true,
+    explanation: "Venus rotates very slowly, taking 243 Earth days to complete one rotation, while it orbits the Sun in only 225 Earth days."
+  },
+  {
+    statement: "Albert Einstein failed math as a student.",
+    isTrue: false,
+    explanation: "Einstein actually excelled in mathematics and physics from a young age, contrary to popular belief."
+  },
+  {
+    statement: "The Sahara Desert is the largest desert in the world.",
+    isTrue: false,
+    explanation: "Antarctica is actually the largest desert in the world. A desert is defined by its low precipitation, not its temperature."
+  },
+  {
+    statement: "Blood in your veins is blue until exposed to oxygen.",
+    isTrue: false,
+    explanation: "Blood is always red. Deoxygenated blood is a darker red, but never blue. Veins appear blue due to how light penetrates skin."
+  },
+  {
+    statement: "The Great Barrier Reef is the largest living structure on Earth.",
+    isTrue: true,
+    explanation: "The Great Barrier Reef is the world's largest coral reef system and the largest living structure on Earth, visible from space."
+  },
+  {
+    statement: "Bats are blind.",
+    isTrue: false,
+    explanation: "Bats can actually see quite well. Most bat species have well-developed eyes and use vision along with echolocation."
+  },
+  {
+    statement: "The Eiffel Tower can be 15 cm taller during the summer.",
+    isTrue: true,
+    explanation: "The iron in the Eiffel Tower expands in the heat, making it grow taller in summer and shrink in winter."
   }
 ];
 
@@ -60,7 +95,18 @@ export const TrueFalseGame = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [earnedTokens, setEarnedTokens] = useState(0);
   const [isSaving, setSaving] = useState(false);
+  const [gameStatements, setGameStatements] = useState<typeof statements>([]);
   const { user } = useAuth();
+  
+  // Function to shuffle array (Fisher-Yates algorithm)
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  };
   
   // Reset game state
   const resetGame = () => {
@@ -72,6 +118,10 @@ export const TrueFalseGame = () => {
     setShowExplanation(false);
     setEarnedTokens(0);
     setSaving(false);
+    
+    // Select random statements (8 per game)
+    const randomStatements = shuffleArray(statements).slice(0, 8);
+    setGameStatements(randomStatements);
   };
   
   // Start game
@@ -85,7 +135,7 @@ export const TrueFalseGame = () => {
     if (showExplanation) return;
     
     setSelectedAnswer(answer);
-    const currentStatement = statements[currentIndex];
+    const currentStatement = gameStatements[currentIndex];
     
     if (answer === currentStatement.isTrue) {
       setScore(prevScore => prevScore + 1);
@@ -101,7 +151,7 @@ export const TrueFalseGame = () => {
       setShowExplanation(false);
       setSelectedAnswer(null);
       
-      if (currentIndex < statements.length - 1) {
+      if (currentIndex < gameStatements.length - 1) {
         setCurrentIndex(prevIndex => prevIndex + 1);
       } else {
         endGame();
@@ -158,12 +208,12 @@ export const TrueFalseGame = () => {
           <div className="flex items-center gap-4">
             <div>
               <div className="text-xs text-muted-foreground mb-1">Score</div>
-              <div className="font-bold text-lg">{score}/{statements.length}</div>
+              <div className="font-bold text-lg">{score}/{gameStatements.length}</div>
             </div>
             
             <div>
               <div className="text-xs text-muted-foreground mb-1">Question</div>
-              <div className="font-bold text-lg">{gameStarted ? `${currentIndex + 1}/${statements.length}` : '-'}</div>
+              <div className="font-bold text-lg">{gameStarted ? `${currentIndex + 1}/${gameStatements.length}` : '-'}</div>
             </div>
           </div>
         </div>
@@ -191,7 +241,7 @@ export const TrueFalseGame = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm p-6">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Game Over!</h3>
-              <p className="text-lg mb-1">Your score: <span className="font-bold">{score}/{statements.length}</span></p>
+              <p className="text-lg mb-1">Your score: <span className="font-bold">{score}/{gameStatements.length}</span></p>
               <div className="flex items-center justify-center gap-2 text-token-blue">
                 <Coins className="w-5 h-5" />
                 <span className="font-bold text-xl">{earnedTokens} TQT</span>
@@ -220,17 +270,17 @@ export const TrueFalseGame = () => {
           </div>
         )}
         
-        {gameStarted && !gameOver && (
+        {gameStarted && !gameOver && gameStatements.length > 0 && (
           <div className="p-6">
             <div className="mb-8">
-              <h3 className="text-xl font-medium mb-6 text-center">{statements[currentIndex].statement}</h3>
+              <h3 className="text-xl font-medium mb-6 text-center">{gameStatements[currentIndex].statement}</h3>
               
               <div className="flex justify-center gap-4 mb-6">
                 <Button
                   variant="outline"
                   className={`py-6 px-8 ${
                     selectedAnswer === true 
-                      ? statements[currentIndex].isTrue 
+                      ? gameStatements[currentIndex].isTrue 
                         ? "bg-green-500 hover:bg-green-500 text-white" 
                         : "bg-red-500 hover:bg-red-500 text-white" 
                       : ""
@@ -246,7 +296,7 @@ export const TrueFalseGame = () => {
                   variant="outline"
                   className={`py-6 px-8 ${
                     selectedAnswer === false 
-                      ? !statements[currentIndex].isTrue 
+                      ? !gameStatements[currentIndex].isTrue 
                         ? "bg-green-500 hover:bg-green-500 text-white" 
                         : "bg-red-500 hover:bg-red-500 text-white" 
                       : ""
@@ -261,15 +311,15 @@ export const TrueFalseGame = () => {
               
               {showExplanation && (
                 <div className={`p-4 rounded-lg ${
-                  selectedAnswer === statements[currentIndex].isTrue 
+                  selectedAnswer === gameStatements[currentIndex].isTrue 
                     ? "bg-green-500/10 border border-green-500/30" 
                     : "bg-red-500/10 border border-red-500/30"
                 }`}>
                   <p className="text-sm">
                     <span className="font-medium">
-                      {statements[currentIndex].isTrue ? "TRUE: " : "FALSE: "}
+                      {gameStatements[currentIndex].isTrue ? "TRUE: " : "FALSE: "}
                     </span>
-                    {statements[currentIndex].explanation}
+                    {gameStatements[currentIndex].explanation}
                   </p>
                 </div>
               )}
@@ -286,6 +336,7 @@ export const TrueFalseGame = () => {
           <li>• Each correct answer earns you 1 point</li>
           <li>• Learn interesting facts from the explanations</li>
           <li>• Earn 4 TQT tokens for each correct answer</li>
+          <li>• Statements are randomly selected each game</li>
         </ul>
       </GlassCard>
     </div>

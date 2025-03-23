@@ -49,6 +49,41 @@ const quizQuestions = [
     options: ["5", "6", "7", "8"],
     correctAnswer: "6"
   },
+  {
+    question: "Which country is known as the Land of the Rising Sun?",
+    options: ["China", "Thailand", "Japan", "South Korea"],
+    correctAnswer: "Japan"
+  },
+  {
+    question: "What is the hardest natural substance on Earth?",
+    options: ["Gold", "Iron", "Diamond", "Platinum"],
+    correctAnswer: "Diamond"
+  },
+  {
+    question: "Which scientist proposed the theory of relativity?",
+    options: ["Isaac Newton", "Galileo Galilei", "Albert Einstein", "Stephen Hawking"],
+    correctAnswer: "Albert Einstein"
+  },
+  {
+    question: "What is the smallest prime number?",
+    options: ["0", "1", "2", "3"],
+    correctAnswer: "2"
+  },
+  {
+    question: "Which animal is known as the 'King of the Jungle'?",
+    options: ["Tiger", "Lion", "Elephant", "Gorilla"],
+    correctAnswer: "Lion"
+  },
+  {
+    question: "Which planet has the most moons?",
+    options: ["Jupiter", "Saturn", "Uranus", "Neptune"],
+    correctAnswer: "Saturn"
+  },
+  {
+    question: "What is the largest organ in the human body?",
+    options: ["Heart", "Liver", "Brain", "Skin"],
+    correctAnswer: "Skin"
+  }
 ];
 
 export const QuizGame = () => {
@@ -60,7 +95,18 @@ export const QuizGame = () => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [earnedTokens, setEarnedTokens] = useState(0);
   const [isSaving, setSaving] = useState(false);
+  const [gameQuestions, setGameQuestions] = useState<typeof quizQuestions>([]);
   const { user } = useAuth();
+  
+  // Function to shuffle array (Fisher-Yates algorithm)
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  };
   
   // Reset game state
   const resetGame = () => {
@@ -72,6 +118,10 @@ export const QuizGame = () => {
     setIsAnswered(false);
     setEarnedTokens(0);
     setSaving(false);
+    
+    // Select random questions (8 questions per game)
+    const randomQuestions = shuffleArray(quizQuestions).slice(0, 8);
+    setGameQuestions(randomQuestions);
   };
   
   // Start game
@@ -87,7 +137,7 @@ export const QuizGame = () => {
     setSelectedOption(option);
     setIsAnswered(true);
     
-    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const currentQuestion = gameQuestions[currentQuestionIndex];
     if (option === currentQuestion.correctAnswer) {
       setScore(prevScore => prevScore + 1);
       toast.success("Correct! +1 point", { duration: 1500 });
@@ -100,7 +150,7 @@ export const QuizGame = () => {
       setIsAnswered(false);
       setSelectedOption(null);
       
-      if (currentQuestionIndex < quizQuestions.length - 1) {
+      if (currentQuestionIndex < gameQuestions.length - 1) {
         setCurrentQuestionIndex(prevIndex => prevIndex + 1);
       } else {
         endGame();
@@ -157,12 +207,12 @@ export const QuizGame = () => {
           <div className="flex items-center gap-4">
             <div>
               <div className="text-xs text-muted-foreground mb-1">Score</div>
-              <div className="font-bold text-lg">{score}/{quizQuestions.length}</div>
+              <div className="font-bold text-lg">{score}/{gameQuestions.length}</div>
             </div>
             
             <div>
               <div className="text-xs text-muted-foreground mb-1">Question</div>
-              <div className="font-bold text-lg">{gameStarted ? `${currentQuestionIndex + 1}/${quizQuestions.length}` : '-'}</div>
+              <div className="font-bold text-lg">{gameStarted ? `${currentQuestionIndex + 1}/${gameQuestions.length}` : '-'}</div>
             </div>
           </div>
         </div>
@@ -190,7 +240,7 @@ export const QuizGame = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm p-6">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-2">Quiz Complete!</h3>
-              <p className="text-lg mb-1">Your score: <span className="font-bold">{score}/{quizQuestions.length}</span></p>
+              <p className="text-lg mb-1">Your score: <span className="font-bold">{score}/{gameQuestions.length}</span></p>
               <div className="flex items-center justify-center gap-2 text-token-blue">
                 <Coins className="w-5 h-5" />
                 <span className="font-bold text-xl">{earnedTokens} TQT</span>
@@ -219,20 +269,20 @@ export const QuizGame = () => {
           </div>
         )}
         
-        {gameStarted && !gameOver && (
+        {gameStarted && !gameOver && gameQuestions.length > 0 && (
           <div className="p-6">
             <div className="mb-8">
-              <h3 className="text-xl font-medium mb-4">{quizQuestions[currentQuestionIndex].question}</h3>
+              <h3 className="text-xl font-medium mb-4">{gameQuestions[currentQuestionIndex].question}</h3>
               
               <div className="grid grid-cols-1 gap-3">
-                {quizQuestions[currentQuestionIndex].options.map((option, index) => (
+                {gameQuestions[currentQuestionIndex].options.map((option, index) => (
                   <Button
                     key={index}
                     variant={selectedOption === option 
-                      ? option === quizQuestions[currentQuestionIndex].correctAnswer 
+                      ? option === gameQuestions[currentQuestionIndex].correctAnswer 
                         ? "default" 
                         : "destructive" 
-                      : isAnswered && option === quizQuestions[currentQuestionIndex].correctAnswer 
+                      : isAnswered && option === gameQuestions[currentQuestionIndex].correctAnswer 
                         ? "default" 
                         : "outline"
                     }
@@ -240,10 +290,10 @@ export const QuizGame = () => {
                       isAnswered ? 'cursor-default' : 'cursor-pointer'
                     } ${
                       selectedOption === option 
-                        ? option === quizQuestions[currentQuestionIndex].correctAnswer 
+                        ? option === gameQuestions[currentQuestionIndex].correctAnswer 
                           ? "bg-green-500 hover:bg-green-500 text-white" 
                           : "bg-red-500 hover:bg-red-500 text-white" 
-                        : isAnswered && option === quizQuestions[currentQuestionIndex].correctAnswer 
+                        : isAnswered && option === gameQuestions[currentQuestionIndex].correctAnswer 
                           ? "bg-green-500 hover:bg-green-500 text-white" 
                           : ""
                     }`}
@@ -270,6 +320,7 @@ export const QuizGame = () => {
           <li>• Each correct answer earns you 1 point</li>
           <li>• Complete all questions to finish the quiz</li>
           <li>• Earn 5 TQT tokens for each correct answer</li>
+          <li>• Questions are randomly selected each game</li>
         </ul>
       </GlassCard>
     </div>

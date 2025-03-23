@@ -18,8 +18,8 @@ export const Navbar = () => {
   const navLinks = [
     { title: "Home", path: "/" },
     { title: "Games", path: "/games" },
-    { title: "Marketplace", path: "/nft-marketplace" },
-    { title: "Token Exchange", path: "/token-exchange" },
+    { title: "Marketplace", path: "/nft" },
+    { title: "Token Exchange", path: "/exchange" },
   ];
 
   useEffect(() => {
