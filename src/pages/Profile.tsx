@@ -99,7 +99,7 @@ const Profile = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="gender">Gender</Label>
-                      <Select defaultValue={user.gender || ""}>
+                      <Select defaultValue={user.gender || "prefer_not_to_say"}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select gender" />
                         </SelectTrigger>
@@ -107,7 +107,7 @@ const Profile = () => {
                           <SelectItem value="male">Male</SelectItem>
                           <SelectItem value="female">Female</SelectItem>
                           <SelectItem value="other">Other</SelectItem>
-                          <SelectItem value="">Prefer not to say</SelectItem>
+                          <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
