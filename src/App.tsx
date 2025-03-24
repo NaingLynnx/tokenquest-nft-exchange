@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Games from './pages/Games';
 import NFTMarketplace from './pages/NFTMarketplace';
 import TokenExchange from './pages/TokenExchange';
+import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/games" element={<Games />} />
           <Route path="/nft" element={<NFTMarketplace />} />
           <Route path="/exchange" element={<TokenExchange />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

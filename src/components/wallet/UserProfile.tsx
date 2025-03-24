@@ -62,18 +62,24 @@ export const UserProfile = () => {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
-          <User className="w-4 h-4 mr-2" />
-          My Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <History className="w-4 h-4 mr-2" />
-          Game History
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <Settings className="w-4 h-4 mr-2" />
-          Settings
-        </DropdownMenuItem>
+        <Link to="/profile">
+          <DropdownMenuItem className="cursor-pointer">
+            <User className="w-4 h-4 mr-2" />
+            My Profile
+          </DropdownMenuItem>
+        </Link>
+        <Link to="/profile?tab=history">
+          <DropdownMenuItem className="cursor-pointer">
+            <History className="w-4 h-4 mr-2" />
+            Game History
+          </DropdownMenuItem>
+        </Link>
+        <Link to="/profile?tab=settings">
+          <DropdownMenuItem className="cursor-pointer">
+            <Settings className="w-4 h-4 mr-2" />
+            Settings
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className="cursor-pointer text-destructive">
           <LogOut className="w-4 h-4 mr-2" />
