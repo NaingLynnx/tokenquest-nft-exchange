@@ -6,7 +6,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowLeft, Search, Sliders, ChevronDown, Gem, 
-  ArrowUpDown, RefreshCw, ShoppingCart, Heart 
+  ArrowUpDown, RefreshCw, ShoppingCart, Heart, Laptop, Code, BookOpen
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { 
@@ -23,10 +23,10 @@ const NFTMarketplace = () => {
   
   const categories = [
     { id: "all", name: "All NFTs" },
-    { id: "gaming", name: "Gaming" },
-    { id: "avatars", name: "Avatars" },
-    { id: "collectibles", name: "Collectibles" },
-    { id: "virtual-land", name: "Virtual Land" },
+    { id: "courses", name: "Courses" },
+    { id: "certificates", name: "Certificates" },
+    { id: "mentorship", name: "Mentorship" },
+    { id: "resources", name: "Resources" },
   ];
   
   const sortOptions = [
@@ -39,63 +39,69 @@ const NFTMarketplace = () => {
   const nfts = [
     {
       id: 1,
-      name: "Cosmic Guardian #42",
-      price: "250 TQT",
-      creator: "TokenQuest Studios",
-      category: "gaming",
-      rarity: "Rare",
+      name: "Web Development Mastery",
+      price: "250 SF",
+      creator: "Strategy First University",
+      category: "courses",
+      rarity: "Premium",
       color: "from-purple-500 to-blue-600",
       likes: 86,
+      icon: <Code className="w-16 h-16 text-white" />
     },
     {
       id: 2,
-      name: "Digital Samurai #17",
-      price: "420 TQT",
-      creator: "Neo Creations",
-      category: "avatars",
-      rarity: "Epic",
+      name: "Data Science Certificate",
+      price: "420 SF",
+      creator: "SFU Academy",
+      category: "certificates",
+      rarity: "Elite",
       color: "from-red-500 to-orange-600",
       likes: 124,
+      icon: <BookOpen className="w-16 h-16 text-white" />
     },
     {
       id: 3,
-      name: "Mystic Owl #103",
-      price: "180 TQT",
-      creator: "Ethereal Arts",
-      category: "collectibles",
-      rarity: "Uncommon",
+      name: "Blockchain Fundamentals",
+      price: "180 SF",
+      creator: "Strategy First Labs",
+      category: "courses",
+      rarity: "Standard",
       color: "from-teal-500 to-green-600",
       likes: 53,
+      icon: <Laptop className="w-16 h-16 text-white" />
     },
     {
       id: 4,
-      name: "Virtual Downtown Plot #7",
-      price: "1200 TQT",
-      creator: "MetaBuilders",
-      category: "virtual-land",
+      name: "Exclusive Mentorship",
+      price: "1200 SF",
+      creator: "SFU Mentors",
+      category: "mentorship",
       rarity: "Legendary",
       color: "from-blue-500 to-indigo-600",
       likes: 192,
+      icon: <Gem className="w-16 h-16 text-white" />
     },
     {
       id: 5,
-      name: "Cyber Wolf #221",
-      price: "320 TQT",
-      creator: "TokenQuest Studios",
-      category: "gaming",
-      rarity: "Rare",
+      name: "Programming Handbook",
+      price: "320 SF",
+      creator: "Strategy First University",
+      category: "resources",
+      rarity: "Premium",
       color: "from-gray-500 to-gray-700",
       likes: 77,
+      icon: <Code className="w-16 h-16 text-white" />
     },
     {
       id: 6,
-      name: "Golden Ticket #8",
-      price: "520 TQT",
-      creator: "Neo Creations",
-      category: "collectibles",
-      rarity: "Epic",
+      name: "Advanced AI Course",
+      price: "520 SF",
+      creator: "SFU Academy",
+      category: "courses",
+      rarity: "Elite",
       color: "from-yellow-400 to-amber-600",
       likes: 145,
+      icon: <BookOpen className="w-16 h-16 text-white" />
     },
   ];
   
@@ -130,14 +136,14 @@ const NFTMarketplace = () => {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">NFT Marketplace</h1>
               <p className="text-muted-foreground">
-                Discover, collect, and trade unique digital collectibles.
+                Discover exclusive Strategy First University digital assets.
               </p>
             </div>
             
             <div className="flex items-center gap-4">
               <GlassCard className="p-2 flex items-center gap-2">
                 <div className="text-xs text-muted-foreground">Your Token Balance:</div>
-                <div className="text-sm font-medium">0 TQT</div>
+                <div className="text-sm font-medium">0 SF</div>
               </GlassCard>
               
               <Button variant="outline" className="rounded-full">
@@ -226,7 +232,7 @@ const NFTMarketplace = () => {
                   
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
-                      <Gem className="w-16 h-16 text-white" />
+                      {nft.icon}
                     </div>
                   </div>
                 </div>

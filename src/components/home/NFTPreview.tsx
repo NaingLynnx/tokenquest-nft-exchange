@@ -3,47 +3,50 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "../ui/GlassCard";
 import { Button } from "@/components/ui/button";
-import { Gem, ArrowRight } from "lucide-react";
+import { Gem, ArrowRight, Laptop, Code, BookOpen } from "lucide-react";
 
 export const NFTPreview = () => {
   const [activeNFT, setActiveNFT] = useState(0);
   
   const nfts = [
     {
-      name: "Cosmic Guardian #42",
-      creator: "TokenQuest Studios",
-      price: "250 TQT",
-      rarity: "Rare",
+      name: "Web Development Mastery",
+      creator: "Strategy First University",
+      price: "250 SF",
+      rarity: "Premium",
       attributes: [
-        { name: "Strength", value: 80 },
-        { name: "Agility", value: 65 },
-        { name: "Intelligence", value: 92 },
+        { name: "Duration", value: 80 },
+        { name: "Resources", value: 65 },
+        { name: "Projects", value: 92 },
       ],
       color: "from-purple-500 to-blue-600",
+      icon: <Code className="w-16 h-16 text-white" />
     },
     {
-      name: "Digital Samurai #17",
-      creator: "Neo Creations",
-      price: "420 TQT",
-      rarity: "Epic",
+      name: "Data Science Certificate",
+      creator: "SFU Academy",
+      price: "420 SF",
+      rarity: "Elite",
       attributes: [
-        { name: "Strength", value: 95 },
-        { name: "Agility", value: 88 },
-        { name: "Intelligence", value: 74 },
+        { name: "Duration", value: 95 },
+        { name: "Resources", value: 88 },
+        { name: "Projects", value: 74 },
       ],
       color: "from-red-500 to-orange-600",
+      icon: <BookOpen className="w-16 h-16 text-white" />
     },
     {
-      name: "Mystic Owl #103",
-      creator: "Ethereal Arts",
-      price: "180 TQT",
-      rarity: "Uncommon",
+      name: "Blockchain Fundamentals",
+      creator: "Strategy First Labs",
+      price: "180 SF",
+      rarity: "Standard",
       attributes: [
-        { name: "Strength", value: 45 },
-        { name: "Agility", value: 60 },
-        { name: "Intelligence", value: 98 },
+        { name: "Duration", value: 45 },
+        { name: "Resources", value: 60 },
+        { name: "Projects", value: 98 },
       ],
       color: "from-teal-500 to-green-600",
+      icon: <Laptop className="w-16 h-16 text-white" />
     },
   ];
 
@@ -68,7 +71,7 @@ export const NFTPreview = () => {
                       
                       <div className="flex-1 flex items-center justify-center">
                         <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
-                          <Gem className="w-16 h-16 text-white" />
+                          {nfts[activeNFT].icon}
                         </div>
                       </div>
                     </div>
@@ -127,7 +130,7 @@ export const NFTPreview = () => {
             </h2>
             
             <p className="text-muted-foreground mb-8 text-lg">
-              Our NFT marketplace features exclusive digital collectibles that provide real benefits within the TokenQuest ecosystem.
+              Our NFT marketplace features exclusive digital assets from Strategy First University that provide real benefits within our educational ecosystem.
             </p>
             
             <div className="space-y-4 mb-8">
@@ -146,7 +149,7 @@ export const NFTPreview = () => {
                     }`}
                   >
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${nft.color} flex items-center justify-center`}>
-                      <Gem className="w-6 h-6 text-white" />
+                      {nft.icon}
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between">
@@ -164,7 +167,7 @@ export const NFTPreview = () => {
             </div>
             
             <Button asChild className="rounded-full">
-              <Link to="/nft-marketplace">
+              <Link to="/nft">
                 Explore Marketplace
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
