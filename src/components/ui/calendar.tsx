@@ -113,7 +113,10 @@ function Calendar({
                 return (
                   <Select
                     value={value?.toString()}
-                    onValueChange={(value) => onChange?.(value)}
+                    onValueChange={(newValue) => {
+                      // Create a synthetic event-like object that matches what onChange expects
+                      onChange && onChange(newValue);
+                    }}
                   >
                     <SelectTrigger className="h-7 w-[110px] text-xs font-medium">
                       <SelectValue placeholder={value} />
