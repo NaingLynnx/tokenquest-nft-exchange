@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
@@ -54,25 +53,78 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 const countries = [
-  "Australia", "Brazil", "Canada", "China", "Denmark", "Finland", "France", 
-  "Germany", "India", "Italy", "Japan", "Mexico", "Myanmar", "Nigeria", 
-  "Norway", "Russia", "South Africa", "Spain", "Sweden", "United Kingdom", "United States"
+  "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", 
+  "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", 
+  "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", 
+  "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", 
+  "Myanmar", "Nepal", "North Korea", "Oman", "Pakistan", "Palestine", 
+  "Philippines", "Qatar", "Saudi Arabia", "Singapore", "South Korea", 
+  "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Timor-Leste", 
+  "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen",
+  "Australia", "Brazil", "Canada", "Denmark", "Finland", "France", 
+  "Germany", "Italy", "Mexico", "Nigeria", "Norway", "Russia", 
+  "South Africa", "Spain", "Sweden", "United Kingdom", "United States"
 ];
 
 const countryToFlag = (country: string): string => {
   switch(country) {
+    case "Afghanistan": return "🇦🇫";
+    case "Armenia": return "🇦🇲";
+    case "Azerbaijan": return "🇦🇿";
+    case "Bahrain": return "🇧🇭";
+    case "Bangladesh": return "🇧🇩";
+    case "Bhutan": return "🇧🇹";
+    case "Brunei": return "🇧🇳";
+    case "Cambodia": return "🇰🇭";
+    case "China": return "🇨🇳";
+    case "Cyprus": return "🇨🇾";
+    case "Georgia": return "🇬🇪";
+    case "India": return "🇮🇳";
+    case "Indonesia": return "🇮🇩";
+    case "Iran": return "🇮🇷";
+    case "Iraq": return "🇮🇶";
+    case "Israel": return "🇮🇱";
+    case "Japan": return "🇯🇵";
+    case "Jordan": return "🇯🇴";
+    case "Kazakhstan": return "🇰🇿";
+    case "Kuwait": return "🇰🇼";
+    case "Kyrgyzstan": return "🇰🇬";
+    case "Laos": return "🇱🇦";
+    case "Lebanon": return "🇱🇧";
+    case "Malaysia": return "🇲🇾";
+    case "Maldives": return "🇲🇻";
+    case "Mongolia": return "🇲🇳";
     case "Myanmar": return "🇲🇲";
+    case "Nepal": return "🇳🇵";
+    case "North Korea": return "🇰🇵";
+    case "Oman": return "🇴🇲";
+    case "Pakistan": return "🇵🇰";
+    case "Palestine": return "🇵🇸";
+    case "Philippines": return "🇵🇭";
+    case "Qatar": return "🇶🇦";
+    case "Saudi Arabia": return "🇸🇦";
+    case "Singapore": return "🇸🇬";
+    case "South Korea": return "🇰🇷";
+    case "Sri Lanka": return "🇱🇰";
+    case "Syria": return "🇸🇾";
+    case "Taiwan": return "🇹🇼";
+    case "Tajikistan": return "🇹🇯";
+    case "Thailand": return "🇹🇭";
+    case "Timor-Leste": return "🇹🇱";
+    case "Turkey": return "🇹🇷";
+    case "Turkmenistan": return "🇹🇲";
+    case "United Arab Emirates": return "🇦🇪";
+    case "Uzbekistan": return "🇺🇿";
+    case "Vietnam": return "🇻🇳";
+    case "Yemen": return "🇾🇪";
     case "Australia": return "🇦🇺";
     case "Brazil": return "🇧🇷";
     case "Canada": return "🇨🇦";
-    case "China": return "🇨🇳";
     case "Denmark": return "🇩🇰";
     case "Finland": return "🇫🇮";
     case "France": return "🇫🇷";
     case "Germany": return "🇩🇪";
-    case "India": return "🇮🇳";
     case "Italy": return "🇮🇹";
-    case "Japan": return "🇯🇵";
     case "Mexico": return "🇲🇽";
     case "Nigeria": return "🇳🇬";
     case "Norway": return "🇳🇴";
@@ -105,7 +157,6 @@ const Signup = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      // Pass all the user data to the signup function
       await signup(
         data.email, 
         data.username, 
@@ -119,12 +170,10 @@ const Signup = () => {
       );
       navigate('/games');
     } catch (error) {
-      // Error is handled in the auth context
       console.error('Signup error:', error);
     }
   };
 
-  // Get current year to set the calendar range
   const currentYear = new Date().getFullYear();
   
   return (

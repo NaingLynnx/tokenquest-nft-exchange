@@ -21,27 +21,45 @@ import {
 const TokenExchange = () => {
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
-  const [fromToken, setFromToken] = useState("TQT");
+  const [fromToken, setFromToken] = useState("SFT");
   const [toToken, setToToken] = useState("USDT");
   
   // Token exchange rates (simplified)
   const exchangeRates = {
-    "TQT-USDT": 0.12,
-    "USDT-TQT": 8.33,
-    "TQT-ETH": 0.00007,
-    "ETH-TQT": 14285.71,
+    "SFT-USDT": 0.12,
+    "USDT-SFT": 8.33,
+    "SFT-ETH": 0.00007,
+    "ETH-SFT": 14285.71,
     "USDT-ETH": 0.0006,
     "ETH-USDT": 1666.67,
+    "SFT-BTC": 0.000003,
+    "BTC-SFT": 330000,
+    "USDT-BTC": 0.000025,
+    "BTC-USDT": 40000,
+    "ETH-BTC": 0.05,
+    "BTC-ETH": 20,
+    "SFT-SOL": 0.001,
+    "SOL-SFT": 1000,
+    "USDT-SOL": 0.0083,
+    "SOL-USDT": 120,
+    "ETH-SOL": 15,
+    "SOL-ETH": 0.066,
+    "BTC-SOL": 300,
+    "SOL-BTC": 0.0033,
+    "SFT-XRP": 0.15,
+    "XRP-SFT": 6.67,
+    "USDT-XRP": 1.25,
+    "XRP-USDT": 0.8,
   };
   
-  // Available tokens
-  const tokens = ["TQT", "USDT", "ETH"];
+  // Available tokens - updated with more options
+  const tokens = ["SFT", "USDT", "ETH", "BTC", "SOL", "XRP"];
   
-  // Recent transactions (mock data)
+  // Recent transactions (mock data) - updated with SF Token (SFT)
   const recentTransactions = [
     { 
       type: "swap", 
-      from: { amount: "500", token: "TQT" }, 
+      from: { amount: "500", token: "SFT" }, 
       to: { amount: "60", token: "USDT" },
       time: "2 hours ago",
       status: "completed"
@@ -49,14 +67,14 @@ const TokenExchange = () => {
     { 
       type: "swap", 
       from: { amount: "0.02", token: "ETH" }, 
-      to: { amount: "285.71", token: "TQT" },
+      to: { amount: "285.71", token: "SFT" },
       time: "5 hours ago",
       status: "completed"
     },
     { 
       type: "swap", 
       from: { amount: "120", token: "USDT" }, 
-      to: { amount: "1000", token: "TQT" },
+      to: { amount: "1000", token: "SFT" },
       time: "1 day ago",
       status: "completed"
     },
@@ -122,7 +140,7 @@ const TokenExchange = () => {
           <div className="mb-12">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">Token Exchange</h1>
             <p className="text-muted-foreground">
-              Swap TokenQuest coins for other cryptocurrencies.
+              Swap SF Token coins for other cryptocurrencies.
             </p>
           </div>
           
@@ -284,7 +302,7 @@ const TokenExchange = () => {
             <div className="space-y-6">
               <GlassCard className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-bold">TQT Price</h2>
+                  <h2 className="text-lg font-bold">SF Token Price</h2>
                   <RefreshCw className="w-4 h-4 text-muted-foreground" />
                 </div>
                 
@@ -334,11 +352,11 @@ const TokenExchange = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <div className="text-muted-foreground">Total Supply</div>
-                    <div className="font-medium">1,000,000 TQT</div>
+                    <div className="font-medium">1,000,000 SFT</div>
                   </div>
                   <div className="flex justify-between">
                     <div className="text-muted-foreground">Circulating</div>
-                    <div className="font-medium">250,000 TQT</div>
+                    <div className="font-medium">250,000 SFT</div>
                   </div>
                   <div className="flex justify-between">
                     <div className="text-muted-foreground">Token Holders</div>
@@ -360,7 +378,7 @@ const TokenExchange = () => {
                   <div>
                     <h3 className="font-medium mb-2">About Token Exchange</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      The TokenQuest Exchange allows you to swap TQT tokens for other cryptocurrencies.
+                      The SF Token Exchange allows you to swap SFT tokens for other cryptocurrencies.
                       Exchange rates are determined by our liquidity pools and market demand.
                     </p>
                     

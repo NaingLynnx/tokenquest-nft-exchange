@@ -114,8 +114,9 @@ function Calendar({
                   <Select
                     value={value?.toString()}
                     onValueChange={(newValue) => {
-                      // Create a synthetic event-like object that matches what onChange expects
-                      onChange && onChange(newValue);
+                      // Since onChange expects an event, but we have a string value,
+                      // we need to pass just the string value
+                      onChange && onChange(newValue as any);
                     }}
                   >
                     <SelectTrigger className="h-7 w-[110px] text-xs font-medium">
