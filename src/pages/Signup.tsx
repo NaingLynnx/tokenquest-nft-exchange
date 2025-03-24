@@ -54,10 +54,37 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 const countries = [
-  "United States", "Canada", "United Kingdom", "Australia", "Germany", "France", 
-  "Japan", "China", "India", "Brazil", "Mexico", "South Africa", "Nigeria", 
-  "Russia", "Sweden", "Norway", "Denmark", "Finland", "Spain", "Italy"
+  "Australia", "Brazil", "Canada", "China", "Denmark", "Finland", "France", 
+  "Germany", "India", "Italy", "Japan", "Mexico", "Myanmar", "Nigeria", 
+  "Norway", "Russia", "South Africa", "Spain", "Sweden", "United Kingdom", "United States"
 ];
+
+const countryToFlag = (country: string): string => {
+  switch(country) {
+    case "Myanmar": return "🇲🇲";
+    case "Australia": return "🇦🇺";
+    case "Brazil": return "🇧🇷";
+    case "Canada": return "🇨🇦";
+    case "China": return "🇨🇳";
+    case "Denmark": return "🇩🇰";
+    case "Finland": return "🇫🇮";
+    case "France": return "🇫🇷";
+    case "Germany": return "🇩🇪";
+    case "India": return "🇮🇳";
+    case "Italy": return "🇮🇹";
+    case "Japan": return "🇯🇵";
+    case "Mexico": return "🇲🇽";
+    case "Nigeria": return "🇳🇬";
+    case "Norway": return "🇳🇴";
+    case "Russia": return "🇷🇺";
+    case "South Africa": return "🇿🇦";
+    case "Spain": return "🇪🇸";
+    case "Sweden": return "🇸🇪";
+    case "United Kingdom": return "🇬🇧";
+    case "United States": return "🇺🇸";
+    default: return "🏳️";
+  }
+};
 
 const Signup = () => {
   const { signup, isLoading } = useAuth();
@@ -97,6 +124,9 @@ const Signup = () => {
     }
   };
 
+  // Get current year to set the calendar range
+  const currentYear = new Date().getFullYear();
+  
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -167,7 +197,7 @@ const Signup = () => {
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
-                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                            <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -205,6 +235,9 @@ const Signup = () => {
                               mode="single"
                               selected={field.value}
                               onSelect={field.onChange}
+                              captionLayout="dropdown-buttons"
+                              fromYear={currentYear - 100}
+                              toYear={currentYear}
                               disabled={(date) =>
                                 date > new Date() || date < new Date("1900-01-01")
                               }
@@ -255,7 +288,7 @@ const Signup = () => {
                           <SelectContent>
                             {countries.map((country) => (
                               <SelectItem key={country} value={country}>
-                                {country}
+                                <span className="mr-2">{countryToFlag(country)}</span> {country}
                               </SelectItem>
                             ))}
                           </SelectContent>

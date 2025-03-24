@@ -32,7 +32,7 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+    <section className="relative pt-32 pb-20 px-6 overflow-hidden" data-lov-id="home/Hero">
       {/* Background graphics */}
       <div
         className="absolute inset-0 -z-10 bg-gradient-to-b from-background via-background to-background/80"
@@ -84,7 +84,7 @@ export const Hero = () => {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-full">
-                  <Link to="/nft-marketplace">
+                  <Link to="/nft">
                     Explore NFTs
                   </Link>
                 </Button>
@@ -135,15 +135,15 @@ export const Hero = () => {
                     <div className="relative w-48 h-48 bg-white/20 rounded-full flex items-center justify-center">
                       <div className="absolute inset-0 rounded-full border-4 border-white/30 animate-spin-slow"></div>
                       <div className="w-40 h-40 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-white text-4xl font-bold">TQ</span>
+                        <span className="text-white text-4xl font-bold">SF</span>
                       </div>
                     </div>
                   </div>
                   <div className="p-6 space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="text-sm text-muted-foreground">TokenQuest</div>
-                        <div className="text-lg font-bold">Genesis Token</div>
+                        <div className="text-sm text-muted-foreground">Strategy First</div>
+                        <div className="text-lg font-bold">SF Token</div>
                       </div>
                       <div className="text-right">
                         <div className="text-sm text-muted-foreground">Value</div>
@@ -152,7 +152,7 @@ export const Hero = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <div className="text-muted-foreground">Total Supply</div>
-                      <div className="font-medium">1,000,000 TQT</div>
+                      <div className="font-medium">1,000,000 SFT</div>
                     </div>
                   </div>
                 </GlassCard>
