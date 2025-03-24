@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/form';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().min(1, 'Please enter your email or username'),
+  password: z.string().min(1, 'Please enter your password'),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -62,7 +62,7 @@ const Login = () => {
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
               <p className="text-muted-foreground">
-                Log in to your TokenQuest account
+                Log in to your SF Token account
               </p>
             </div>
             
@@ -73,11 +73,11 @@ const Login = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Email or Username</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="Enter your email" className="pl-10" {...field} />
+                          <Input placeholder="Enter your email or username" className="pl-10" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />

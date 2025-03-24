@@ -1,3 +1,4 @@
+
 // Simple localStorage-based database service for demo purposes
 // In a production app, this would connect to a real database like Supabase, Firebase, etc.
 
@@ -38,6 +39,10 @@ export function initDatabase(): void {
   if (!localStorage.getItem(GAME_RESULTS_KEY)) {
     localStorage.setItem(GAME_RESULTS_KEY, JSON.stringify([]));
   }
+  
+  // Add console logs to debug database initialization
+  console.log('Database initialized');
+  console.log('Users:', getAllUsers());
 }
 
 // User functions
@@ -53,15 +58,27 @@ export function getUserById(id: string): User | null {
 
 export function getUserByEmail(email: string): User | null {
   const users = getAllUsers();
-  return users.find(user => user.email === email) || null;
+  // Make email comparison case-insensitive
+  return users.find(user => user.email.toLowerCase() === email.toLowerCase()) || null;
+}
+
+export function getUserByUsername(username: string): User | null {
+  const users = getAllUsers();
+  // Make username comparison case-insensitive
+  return users.find(user => user.username.toLowerCase() === username.toLowerCase()) || null;
 }
 
 export function createUser(userData: Omit<User, 'id' | 'tokens' | 'createdAt'>): User {
   const users = getAllUsers();
   
-  // Check if email already exists
-  if (users.some(user => user.email === userData.email)) {
+  // Check if email already exists (case-insensitive)
+  if (users.some(user => user.email.toLowerCase() === userData.email.toLowerCase())) {
     throw new Error('Email already exists');
+  }
+  
+  // Check if username already exists (case-insensitive)
+  if (users.some(user => user.username.toLowerCase() === userData.username.toLowerCase())) {
+    throw new Error('Username already exists');
   }
   
   const newUser: User = {
@@ -73,6 +90,10 @@ export function createUser(userData: Omit<User, 'id' | 'tokens' | 'createdAt'>):
   
   users.push(newUser);
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  
+  // Log the user creation for debugging
+  console.log('User created:', newUser);
+  console.log('All users after creation:', getAllUsers());
   
   return newUser;
 }
@@ -116,12 +137,21 @@ export function setCurrentUser(user: User | null): void {
 }
 
 export function login(email: string, password: string): User {
-  const user = getUserByEmail(email);
+  // Try to find user by email first
+  let user = getUserByEmail(email);
   
+  // If not found by email, try by username
+  if (!user) {
+    user = getUserByUsername(email);
+  }
+  
+  // If user is still not found or password doesn't match
   if (!user || user.password !== password) {
+    console.log('Login attempt failed:', { email, foundUser: !!user });
     throw new Error('Invalid email or password');
   }
   
+  console.log('Login successful:', user);
   setCurrentUser(user);
   return user;
 }
@@ -160,6 +190,15 @@ export function addGameResult(data: Omit<GameResult, 'id' | 'timestamp'>): GameR
   }
   
   return newResult;
+}
+
+// Function to clear database (for debug purposes)
+export function clearDatabase(): void {
+  localStorage.removeItem(USERS_KEY);
+  localStorage.removeItem(CURRENT_USER_KEY);
+  localStorage.removeItem(GAME_RESULTS_KEY);
+  initDatabase();
+  console.log('Database cleared and reinitialized');
 }
 
 // Initialize database on import

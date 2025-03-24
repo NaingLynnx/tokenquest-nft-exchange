@@ -1,13 +1,13 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, getCurrentUser, login as dbLogin, logout as dbLogout, createUser, getUserByEmail, updateUser } from '../services/database';
+import { User, getCurrentUser, login as dbLogin, logout as dbLogout, createUser, getUserByEmail, updateUser, getAllUsers } from '../services/database';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (emailOrUsername: string, password: string) => Promise<void>;
   signup: (email: string, username: string, password: string, additionalData?: Record<string, any>) => Promise<void>;
   logout: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
@@ -29,12 +29,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const currentUser = getCurrentUser();
     setUser(currentUser);
     setIsLoading(false);
+    
+    // Debug: Log all users in localStorage
+    console.log('All users in database:', getAllUsers());
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (emailOrUsername: string, password: string) => {
     try {
       setIsLoading(true);
-      const loggedInUser = dbLogin(email, password);
+      const loggedInUser = dbLogin(emailOrUsername, password);
       setUser(loggedInUser);
       toast.success('Login successful!');
     } catch (error) {
