@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap } from "lucide-react";
+import { Menu, X, Zap, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavbarActions } from "./NavbarActions";
 import { useAuth } from "@/contexts/AuthContext";
@@ -20,6 +20,7 @@ export const Navbar = () => {
     { title: "Games", path: "/games" },
     { title: "Marketplace", path: "/nft" },
     { title: "Token Exchange", path: "/exchange" },
+    { title: "Chat Assistant", path: "/chat" },
   ];
 
   useEffect(() => {

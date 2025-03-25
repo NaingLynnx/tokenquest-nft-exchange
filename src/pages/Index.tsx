@@ -7,6 +7,7 @@ import { Features } from "@/components/home/Features";
 import { GameShowcase } from "@/components/home/GameShowcase";
 import { TokenExplainer } from "@/components/home/TokenExplainer";
 import { NFTPreview } from "@/components/home/NFTPreview";
+import { ChatBot } from "@/components/chat/ChatBot";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
         <NFTPreview />
       </main>
       <Footer />
+      <ChatBot />
     </div>
   );
 };
