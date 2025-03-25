@@ -64,7 +64,7 @@ export const GameShowcase = () => {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="order-2 lg:order-1">
+          <div className="lg:order-1 order-2">
             <div className="space-y-6">
               {games.map((game, index) => (
                 <div 

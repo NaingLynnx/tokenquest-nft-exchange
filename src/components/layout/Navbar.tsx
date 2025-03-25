@@ -21,7 +21,7 @@ export const Navbar = () => {
     { title: "Games", path: "/games" },
     { title: "Marketplace", path: "/nft" },
     { title: "Token Exchange", path: "/exchange" },
-    { title: "Chat Assistant", path: "/chat" },
+    { title: "Blogs", path: "/chat" },
   ];
 
   useEffect(() => {
