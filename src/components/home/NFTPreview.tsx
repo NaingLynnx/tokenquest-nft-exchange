@@ -12,7 +12,7 @@ export const NFTPreview = () => {
     {
       name: "Web Development Mastery",
       creator: "Strategy First University",
-      price: "250 SF",
+      price: "250 S1T",
       rarity: "Premium",
       attributes: [
         { name: "Duration", value: 80 },
@@ -20,12 +20,13 @@ export const NFTPreview = () => {
         { name: "Projects", value: 92 },
       ],
       color: "from-purple-500 to-blue-600",
-      icon: <Code className="w-16 h-16 text-white" />
+      icon: <Code className="w-16 h-16 text-white" />,
+      image: "/assets/web-dev-course.jpg"
     },
     {
       name: "Data Science Certificate",
       creator: "SFU Academy",
-      price: "420 SF",
+      price: "420 S1T",
       rarity: "Elite",
       attributes: [
         { name: "Duration", value: 95 },
@@ -33,12 +34,13 @@ export const NFTPreview = () => {
         { name: "Projects", value: 74 },
       ],
       color: "from-red-500 to-orange-600",
-      icon: <BookOpen className="w-16 h-16 text-white" />
+      icon: <BookOpen className="w-16 h-16 text-white" />,
+      image: "/assets/data-science-cert.jpg"
     },
     {
       name: "Blockchain Fundamentals",
       creator: "Strategy First Labs",
-      price: "180 SF",
+      price: "180 S1T",
       rarity: "Standard",
       attributes: [
         { name: "Duration", value: 45 },
@@ -46,7 +48,8 @@ export const NFTPreview = () => {
         { name: "Projects", value: 98 },
       ],
       color: "from-teal-500 to-green-600",
-      icon: <Laptop className="w-16 h-16 text-white" />
+      icon: <Laptop className="w-16 h-16 text-white" />,
+      image: "/assets/blockchain-course.jpg"
     },
   ];
 
@@ -70,9 +73,17 @@ export const NFTPreview = () => {
                       </div>
                       
                       <div className="flex-1 flex items-center justify-center">
-                        <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
-                          {nfts[activeNFT].icon}
-                        </div>
+                        {nfts[activeNFT].image ? (
+                          <img 
+                            src={nfts[activeNFT].image} 
+                            alt={nfts[activeNFT].name} 
+                            className="w-full h-full object-cover opacity-80"
+                          />
+                        ) : (
+                          <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
+                            {nfts[activeNFT].icon}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -148,8 +159,12 @@ export const NFTPreview = () => {
                       activeNFT === index ? "border-token-blue/30 shadow-lg" : ""
                     }`}
                   >
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${nft.color} flex items-center justify-center`}>
-                      {nft.icon}
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${nft.color} flex items-center justify-center overflow-hidden`}>
+                      {nft.image ? (
+                        <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" />
+                      ) : (
+                        nft.icon
+                      )}
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between">
