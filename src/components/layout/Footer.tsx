@@ -29,7 +29,7 @@ export const Footer = () => {
               <div className="w-8 h-8 rounded-full bg-token-blue flex items-center justify-center text-white">
                 <Zap className="w-5 h-5" />
               </div>
-              SF Token
+              S1st Token
             </Link>
             <p className="text-muted-foreground text-sm max-w-sm">
               Play, earn and trade on the most innovative Web3 gaming platform. 
@@ -103,7 +103,7 @@ export const Footer = () => {
         
         <GlassCard className="flex flex-col md:flex-row justify-between items-center gap-4 p-6 bg-token-dark/5">
           <p className="text-sm text-muted-foreground">
-            © {year} SF Token. All rights reserved.
+            © {year} S1st Token. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-xs text-muted-foreground hover:text-token-blue transition-colors">Privacy Policy</a>

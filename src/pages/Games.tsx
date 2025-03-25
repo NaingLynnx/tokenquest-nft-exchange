@@ -72,13 +72,13 @@ const Games = () => {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Games</h1>
               <p className="text-muted-foreground">
-                Play mini-games to earn TokenQuest coins and compete in tournaments.
+                Play mini-games to earn S1st coins and compete in tournaments.
               </p>
             </div>
             
             <GlassCard className="p-3 flex items-center gap-2">
               <div className="text-xs text-muted-foreground">Your Token Balance:</div>
-              <div className="text-sm font-medium">{user ? formatTokens(user.tokens) : "0"} TQT</div>
+              <div className="text-sm font-medium">{user ? formatTokens(user.tokens) : "0"} S1T</div>
             </GlassCard>
           </div>
           
@@ -253,7 +253,7 @@ const Games = () => {
             <Gamepad2 className="w-12 h-12 text-token-blue mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">Want More Games?</h2>
             <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-              We're constantly developing new games for the TokenQuest platform.
+              We're constantly developing new games for the S1st Token platform.
               Subscribe to our newsletter to be the first to know when new games are released.
             </p>
             <Button className="rounded-full">

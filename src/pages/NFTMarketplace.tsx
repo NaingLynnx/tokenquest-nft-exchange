@@ -40,7 +40,7 @@ const NFTMarketplace = () => {
     {
       id: 1,
       name: "Web Development Mastery",
-      price: "250 SF",
+      price: "250 S1T",
       creator: "Strategy First University",
       category: "courses",
       rarity: "Premium",
@@ -51,7 +51,7 @@ const NFTMarketplace = () => {
     {
       id: 2,
       name: "Data Science Certificate",
-      price: "420 SF",
+      price: "420 S1T",
       creator: "SFU Academy",
       category: "certificates",
       rarity: "Elite",
@@ -62,7 +62,7 @@ const NFTMarketplace = () => {
     {
       id: 3,
       name: "Blockchain Fundamentals",
-      price: "180 SF",
+      price: "180 S1T",
       creator: "Strategy First Labs",
       category: "courses",
       rarity: "Standard",
@@ -73,7 +73,7 @@ const NFTMarketplace = () => {
     {
       id: 4,
       name: "Exclusive Mentorship",
-      price: "1200 SF",
+      price: "1200 S1T",
       creator: "SFU Mentors",
       category: "mentorship",
       rarity: "Legendary",
@@ -84,7 +84,7 @@ const NFTMarketplace = () => {
     {
       id: 5,
       name: "Programming Handbook",
-      price: "320 SF",
+      price: "320 S1T",
       creator: "Strategy First University",
       category: "resources",
       rarity: "Premium",
@@ -95,7 +95,7 @@ const NFTMarketplace = () => {
     {
       id: 6,
       name: "Advanced AI Course",
-      price: "520 SF",
+      price: "520 S1T",
       creator: "SFU Academy",
       category: "courses",
       rarity: "Elite",
@@ -143,7 +143,7 @@ const NFTMarketplace = () => {
             <div className="flex items-center gap-4">
               <GlassCard className="p-2 flex items-center gap-2">
                 <div className="text-xs text-muted-foreground">Your Token Balance:</div>
-                <div className="text-sm font-medium">0 SF</div>
+                <div className="text-sm font-medium">0 S1T</div>
               </GlassCard>
               
               <Button variant="outline" className="rounded-full">

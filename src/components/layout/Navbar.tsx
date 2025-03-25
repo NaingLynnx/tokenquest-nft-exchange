@@ -53,7 +53,7 @@ export const Navbar = () => {
           <div className="w-10 h-10 rounded-full bg-token-blue flex items-center justify-center text-white font-bold">
             <Zap className="w-6 h-6" />
           </div>
-          <span className="animate-fade-in">SF Token</span>
+          <span className="animate-fade-in">S1st Token</span>
         </Link>
 
         {/* Desktop Navigation */}

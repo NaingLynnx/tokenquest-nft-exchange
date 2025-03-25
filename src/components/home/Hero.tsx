@@ -135,7 +135,7 @@ export const Hero = () => {
                     <div className="relative w-48 h-48 bg-white/20 rounded-full flex items-center justify-center">
                       <div className="absolute inset-0 rounded-full border-4 border-white/30 animate-spin-slow"></div>
                       <div className="w-40 h-40 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-white text-4xl font-bold">SF</span>
+                        <span className="text-white text-4xl font-bold">S1</span>
                       </div>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export const Hero = () => {
                     <div className="flex justify-between items-center">
                       <div>
                         <div className="text-sm text-muted-foreground">Strategy First</div>
-                        <div className="text-lg font-bold">SF Token</div>
+                        <div className="text-lg font-bold">S1st Token</div>
                       </div>
                       <div className="text-right">
                         <div className="text-sm text-muted-foreground">Value</div>
@@ -152,7 +152,7 @@ export const Hero = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <div className="text-muted-foreground">Total Supply</div>
-                      <div className="font-medium">1,000,000 SFT</div>
+                      <div className="font-medium">1,000,000 S1T</div>
                     </div>
                   </div>
                 </GlassCard>
