@@ -190,7 +190,6 @@ const NFTMarketplace = () => {
     }
   };
 
-  // Create image directory
   useEffect(() => {
     console.log("NFT Marketplace loaded");
   }, []);
@@ -303,17 +302,10 @@ const NFTMarketplace = () => {
                   </div>
                   
                   <div className="absolute inset-0 flex items-center justify-center">
-                    {nft.image ? (
-                      <img 
-                        src={nft.image} 
-                        alt={nft.name} 
-                        className="w-full h-full object-cover opacity-80"
-                      />
-                    ) : (
-                      <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
-                        {nft.icon}
-                      </div>
-                    )}
+                    {/* Always display the icon container with an optional image */}
+                    <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-lg flex items-center justify-center">
+                      {nft.icon}
+                    </div>
                   </div>
                 </div>
                 
